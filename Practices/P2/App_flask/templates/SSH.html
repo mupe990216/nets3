@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>.: Alta :.</title>
+	<style type="text/css">
+		*{
+			font-family: arial;
+		}
+		#menu{
+			padding: 10px;
+			margin: 100px;
+			font-size: 20px;			
+		}
+		#menu:hover{
+			font-size: 24px;
+			cursor: pointer;
+		}
+		#logear{		
+			padding: 10px;
+			margin: 10px;
+			font-size: 20px;			
+		}
+		#logear:hover{
+			font-size: 24px;	
+			cursor: pointer;
+		}
+		.input_log{
+			padding: 10px;
+			margin: 10px;
+			font-size: 20px;		
+		}
+		.input_log:hover{
+			cursor: text;			
+		}
+		.input_log:activate{
+			cursor: text;			
+		}
+		.button{
+			padding: 10px;
+			margin: 10px;
+			font-size: 20px;
+		}
+		.button:hover{
+			font-size: 24px;	
+			cursor: pointer;
+		}
+	</style>
+	<script>
+		function redirecciona(){
+			window.location = "/"
+			/*Esta funcion es a traves del metodo GET*/
+		}
+	</script>	
+</head>
+<body>
+	<center>
+		<h1>Prueba SSH</h1><br><br><br>
+
+		{% if control==0 %}		
+		<form action="/SSH" method="POST">
+			<input name="usr" type="text" placeholder="Usuario" required class="input_log"><br>
+			<input name="psw" type="password" placeholder="Contraseña" required class="input_log"><br>
+			<input type="submit" value="Ingresar" id="logear">
+		</form>
+		{% endif %}
+
+		{% if control==1 %}
+
+			{% if list_data!=None  %}
+			
+				{% for elemento in list_data: %}
+				<h3>Usuario : {{elemento[0]}}</h3>
+				<h3>Router  : {{elemento[1]}}</h3>
+				<h3>Password: {{elemento[2]}}</h3><br><br>
+
+				<form action="/SSH/CMD" method="POST">
+					<input type="hidden" name="usr" value="{{elemento[0]}}">
+					<input type="hidden" name="rou" value="{{elemento[1]}}">
+					<input type="hidden" name="psw" value="{{elemento[2]}}">
+					<input type="submit" value="Probar Comandos" class="button">
+				</form>
+
+				{% endfor %}
+
+			{% else: %}	
+				<h2>El usuario no existe :c</h2>
+				<form action="/SSH" method="GET">
+					<input type="submit" value="Volver a intentarlo" class="button">
+				</form>
+			{% endif %}
+
+		{% endif %}
+
+		<br><br><input type="button" onclick="redirecciona()" value="Regresar al menu" id="menu">
+	</center>	
+
+
+</body>
+</html>

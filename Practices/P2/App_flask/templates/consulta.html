@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>.: Alta :.</title>
+	<style type="text/css">
+		*{
+			font-family: arial;
+		}
+		table,th,td{
+			border: 1px solid black;
+			padding: 10px;
+		}
+		#probar{
+			padding: 10px;
+			margin: 100px;
+			font-size: 20px;			
+		}
+		#probar:hover{
+			font-size: 24px;
+			cursor: pointer;
+		}
+	</style>
+	<script>
+		function redirecciona(num){
+			if (num==1){							
+				window.location = "/SSH"
+				/*Esta funcion es a traves del metodo GET*/
+			}
+			if (num==2){							
+				window.location = "/"
+				/*Esta funcion es a traves del metodo GET*/
+			}			
+		}
+		function enviaForm(formu,nombre,accion){
+			//alert("Form:"+formu+nombre);
+			formu.opc.value = accion;
+			formu.submit();
+		}
+	</script>
+</head>
+<body>
+	<center>
+		{% if control==0 %}
+			<h1>Consulta Usuarios</h1>
+			<table>
+				<tr style="font-size: 20px;">
+					<th>Usuario</th>
+					<th>Router</th>
+					<th>Contraseña</th>
+					<th>Modificar</th>
+					<th>Eliminar</th>
+				</tr>				
+			{% for fila in filas %}
+				<tr>
+					<form action="#" method="GET" name="{{fila[0]}}">
+				{% for elemento in fila %}				
+					<th>{{ elemento }}</th>
+				{% endfor %}
+					<th><input type="button" value="Modificar" onclick="enviaForm({{fila[0]}},'{{fila[0]}}',1)"></th>
+					<th><input type="button" value="Eliminar" onclick="enviaForm({{fila[0]}},'{{fila[0]}}',3)"></th>
+					<input type="hidden" name="usr" value="{{fila[0]}}">
+					<input type="hidden" name="opc" value="">
+					</form>
+				</tr>
+			{% endfor %}
+			</table>		
+			<input type="button" onclick="redirecciona(1)" value="Probar SSH" id="probar">
+		{% endif %}
+
+		{% if control==1 %}
+			<!-- Formulario de Modificacion -->
+			<h1>Modifica al usuario</h1><br><br>			
+
+			{% for elemento in list_data %}			
+				<h3>Usuario : {{elemento[0]}}</h3>
+				<h3>Router  : {{elemento[1]}}</h3>
+				<h3>Password: {{elemento[2]}}</h3><br><br>
+				<form action="/modifica" method="GET">
+					<input type="text" value="{{elemento[0]}}" disabled>
+					<select disabled>				
+						<option value="R1" {% if 'R1' == elemento[1] %} selected="true" {% endif %}> Router 1</option>
+						<option value="R2" {% if 'R2' == elemento[1] %} selected="true" {% endif %}> Router 2</option>
+						<option value="R3" {% if 'R3' == elemento[1] %} selected="true" {% endif %}> Router 3</option>
+					</select>
+					<input type="hidden" name="usr" value="{{elemento[0]}}">
+					<input type="hidden" name="rou" value="{{elemento[1]}}">
+					<input type="text" name="psw" placeholder="Nuevo Password" required>
+					<input type="submit" value="Modificar Usuario">
+				</form>			
+			{% endfor %}			
+
+		{% endif %}
+
+		{% if control==2 %}
+			<!-- Mensaje de Modificacion -->
+			<h1>Usuario Modificado</h1><br><br>
+			{% for elemento in list_data %}			
+				<h3>Usuario : {{elemento[0]}}</h3>
+				<h3>Router  : {{elemento[1]}}</h3>
+				<h3>Password: {{elemento[2]}}</h3><br><br>
+				<input type="button" onclick="redirecciona(1)" value="Probar SSH" id="probar">
+			{% endfor %}	
+
+		{% endif %}
+
+		{% if control==3 %}
+			<!-- Mensaje de Eliminacion -->
+			<h1>¿Eliminar este usuario?</h1><br><br>
+
+			{% for elemento in list_data %}			
+				<h3>Usuario : {{elemento[0]}}</h3>
+				<h3>Router  : {{elemento[1]}}</h3>
+				<h3>Password: {{elemento[2]}}</h3><br><br>
+				<form action="/elimina" method="GET">					
+					<input type="hidden" name="usr" value="{{elemento[0]}}">
+					<input type="hidden" name="rou" value="{{elemento[1]}}">
+					<input type="hidden" name="psw" value="{{elemento[2]}}">					
+					<input type="submit" value="Eliminar Usuario" id="probar">
+				</form>			
+			{% endfor %}	
+		{% endif %}
+
+		{% if control==4 %}
+			<h1>Usuario Eliminado</h1><br><br>
+			<input type="button" onclick="redirecciona(2)" value="Volver Menu" id="probar">
+		{% endif %}
+	</center>
+</body>
+</html>

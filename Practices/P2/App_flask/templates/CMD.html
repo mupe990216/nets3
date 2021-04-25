@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>.: Comandos :.</title>
+	<style type="text/css">
+		*{
+			font-family: arial;
+		}
+		#menu{
+			padding: 10px;
+			margin: 100px;
+			font-size: 20px;			
+		}
+		#menu:hover{
+			font-size: 24px;
+			cursor: pointer;
+		}
+		.button{
+			padding: 10px;
+			margin: 10px;
+			font-size: 20px;
+		}
+		.button:hover{
+			font-size: 24px;	
+			cursor: pointer;
+		}
+		textarea{
+			resize: none;
+		}		
+	</style>
+	<script>
+		function redirecciona(){
+			window.location = "/"
+			/*Esta funcion es a traves del metodo GET*/
+		}
+	</script>
+</head>
+<body>
+	<center>
+		<h1>Prueba SSH - Comandos</h1><br><br><br>						
+		<h3>Usuario : {{ usr }}</h3>
+		<h3>Router  : {{ rou }}</h3>
+		<h3>Password: {{ psw }}</h3><br><br>
+
+		<form action="/SSH/CMD" method="GET">
+			<textarea name="comando" id="comando" cols="85" rows="5" placeholder="IMPORTANTE: Cada comando tiene que terminar con enter o salto de linea"></textarea><br>
+			<input type="hidden" name="usr" value="{{ usr }}">
+			<input type="hidden" name="rou" value="{{ rou }}">
+			<input type="hidden" name="psw" value="{{ psw }}">
+			<input type="submit" value="Enviar Comando" class="button">
+		</form>
+
+		{% if control==1 %}
+			<br><textarea name="muestra" id="muestra" cols="85" rows="7" disabled>{{ cmd }}</textarea>
+
+		{% endif %}
+
+		<br><br><input type="button" onclick="redirecciona()" value="Regresar al menu" id="menu">
+	</center>	
+</body>
+</html>

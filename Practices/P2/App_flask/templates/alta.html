@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>.: Alta :.</title>
+	<style type="text/css">
+		*{
+			font-family: arial;
+		}
+		table,th,td{
+			border: 1px solid black;
+			padding: 10px;
+		}
+		#ver{
+			padding: 10px;
+			margin: 100px;
+			font-size: 20px;			
+		}
+		#ver:hover{
+			font-size: 24px;
+			cursor: pointer;
+		}
+	</style>
+	<script>
+		function redirecciona(num){
+			if (num == 1){
+				window.location = "/consulta"
+				/*Esta funcion es a traves del metodo GET*/
+			}
+			if (num == 2){
+				window.location = "/alta"
+				/*Esta funcion es a traves del metodo GET*/
+			}
+		}
+	</script>
+</head>
+<body>
+	<center>				
+		{% if registra==0 %}
+		<h1>Alta Usuarios</h1>
+		<form action="/alta" method="GET">
+			<input type="text" name="usr" placeholder="Usuario" required>
+			<select name="rou" id="rou" required>				
+				<option value="R1"> Router 1</option>
+				<option value="R2"> Router 2</option>
+				<option value="R3"> Router 3</option>
+			</select>
+			<input type="password" name="psw" placeholder="Contrasenia" required>
+			<input type="hidden" name="registra" value=1>
+			<input type="submit" value="Agregar">
+		</form>
+		{% else %}
+			{% if existe==0 %}
+			<br><br><br>
+			<h1>¡Registro Exitoso!</h1><br>
+			<table>
+				<tr>
+					<th>Usuario</th>
+					<th>Router</th>
+					<th>Contraseña</th>
+				</tr>
+				<tr>
+					<td>{{usr}}</td>
+					<td>{{rou}}</td>				
+					<td>{{psw}}</td>
+				</tr>
+			</table><br><br>
+			<!-- <a href="/consulta" >holi</a> -->
+			<form action="/consulta" method="POST">
+			<input type="submit" value="Ver Cambios" id="ver">
+			</form>
+			{% else %}
+				<br><br><br>
+				<h1>¡El usuario ya existe!</h1><br>
+				<h2>Pruebe nuevamente con otro</h2>
+				<form action="/alta" method="POST">
+					<input type="submit" id="ver" value="Intentar otra vez">
+				</form>
+			{% endif %}
+		{% endif %}
+	</center>
+</body>
+</html>
